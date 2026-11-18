@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Third-Party Script Monitor{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+<header class="top"><a href="{{ url_for('index') }}" class="brand">🛡️ Third-Party Script Monitor</a><span class="ver">v{{ version }} · read-only</span></header>
+{% block content %}{% endblock %}
+<footer class="bottom">Defensive tool from <a href="https://getprojects.org/" target="_blank" rel="noopener">GetProjects.org</a> · MIT License · No JavaScript from scanned sites is ever executed.</footer>
+</body>
+</html>

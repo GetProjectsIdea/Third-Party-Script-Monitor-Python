@@ -1,0 +1,5 @@
+{
+  "/": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'nonce-r4nd0m' 'unsafe-eval' 'strict-dynamic' https://cdn.abtest-vendor.example https://cdn.libcdn.example https://cdn.chatwidget.example; style-src 'self' https://fonts.democdn.example; connect-src 'self' https:; img-src 'self' data:; object-src 'none'; base-uri 'self'; report-uri /csp-report"
+  }
+}

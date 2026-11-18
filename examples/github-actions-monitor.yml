@@ -1,0 +1,25 @@
+# Copy to .github/workflows/script-monitor.yml in YOUR website's repo.
+# Runs every 6 hours, compares your pages with the committed baseline and
+# fails the job (so GitHub emails you) when a high or critical change appears.
+name: third-party-script-monitor
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install git+https://github.com/GetProjectsIdea/Third-Party-Script-Monitor-Python
+      - run: script-monitor scan --urls-file monitor/urls.txt --baseline monitor/baseline.json --html report.html --fail-on high --no-color
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: script-monitor-report
+          path: report.html

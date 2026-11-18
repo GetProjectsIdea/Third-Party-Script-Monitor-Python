@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="wrap">
+  <section class="hero">
+    <h1>Watch every script your website trusts</h1>
+    <p>Inventory third-party <code>&lt;script&gt;</code> and <code>&lt;link&gt;</code> files, hash them, check SRI, review your CSP and get alerted when anything changes against your baseline.</p>
+  </section>
+  {% if error %}<div class="err">{{ error }}</div>{% endif %}
+  <form method="post" action="{{ url_for('scan') }}" class="card">
+    <label for="urls">Page URLs (one per line, up to 10)</label>
+    <textarea id="urls" name="urls" rows="4" placeholder="https://your-site.example/&#10;https://your-site.example/checkout">{{ urls }}</textarea>
+    <div class="row">
+      <button name="action" value="scan">Scan &amp; compare with baseline</button>
+      <button name="action" value="baseline" class="sec">Scan &amp; save as baseline</button>
+    </div>
+    <p class="note">Only scan sites you own or are allowed to test. The first scan of a URL becomes its baseline automatically.</p>
+  </form>
+  <form method="post" action="{{ url_for('scan') }}" class="card demo">
+    <h2>Try the offline demo</h2>
+    <p>A harmless fake shop. Version 2 simulates what the Optimizely incident looked like from the outside: a trusted vendor file changes, a new host appears and the CSP gets weaker.</p>
+    <div class="row">
+      <button name="action" value="demo-v1" class="sec">1. Scan demo v1 (baseline)</button>
+      <button name="action" value="demo-v2">2. Scan demo v2 (detect changes)</button>
+    </div>
+  </form>
+</main>
+{% endblock %}

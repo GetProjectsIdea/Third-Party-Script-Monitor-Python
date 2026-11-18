@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "third-party-script-monitor"
+version = "1.0.0"
+description = "Read-only monitor for third-party scripts on your website: inventory, hashes, SRI checks, CSP review and change alerts against a baseline."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Pardeep Patel" }]
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+web = ["Flask>=3.0"]
+dev = ["pytest>=8.0", "Flask>=3.0"]
+
+[project.scripts]
+script-monitor = "script_monitor.cli:main"
+
+[project.urls]
+Homepage = "https://getprojects.org/third-party-script-monitor-python/"
+Source = "https://github.com/GetProjectsIdea/Third-Party-Script-Monitor-Python"
+
+[tool.setuptools]
+packages = ["script_monitor"]

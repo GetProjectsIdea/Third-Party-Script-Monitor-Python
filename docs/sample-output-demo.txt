@@ -1,0 +1,73 @@
+Step 1: scanning version 1 of the demo shop and saving a baseline...
+
+  v1 score 8/100, verdict REVIEW, 5 resources baselined.
+
+Step 2: scanning version 2 (a vendor file changed, SRI removed, new script, weaker CSP)...
+
+==============================================================================
+Page:     https://shop.demo.example/
+Scanned:  2026-11-18T04:41:46Z   HTTP 200
+Assets:   6 external (4 third-party), 1 inline script(s)
+CSP:      enforced via header
+Score:    100/100   Verdict: INVESTIGATE NOW
+------------------------------------------------------------------------------
+TYPE          PARTY  SRI        SHA-256       URL
+stylesheet    1st    missing    e627e664dce2  https://shop.demo.example/static/site.css
+stylesheet    3rd    missing    761dc94455bb  https://fonts.democdn.example/css/demosans.css
+script        3rd    missing    d7b0ffac7aae  https://cdn.abtest-vendor.example/js/12345.js
+script        3rd    mismatch   14b093834bb7  https://cdn.libcdn.example/npm/tinylib@1.2.3/tinylib.min.js
+script        1st    missing    21583090d2fc  https://shop.demo.example/static/app.js
+script        3rd    missing    cbb14d83c27c  https://cdn.chatwidget.example/widget.js
+------------------------------------------------------------------------------
+CHANGES since baseline (2026-11-18T04:41:46Z): 11
+  [HIGH] CSP_WEAKENED: script-src now allows 'unsafe-eval'
+      This keyword or scheme weakens the policy.
+  [HIGH] CSP_WEAKENED: script-src now allows 'strict-dynamic'
+      This keyword or scheme weakens the policy.
+  [HIGH] CSP_WEAKENED: connect-src now allows https:
+      This keyword or scheme weakens the policy.
+  [HIGH] NEW_REFERENCED_HOST: Changed script now references new host(s)
+      https://cdn.abtest-vendor.example/js/12345.js
+      stats-collector.example. A loader added to a trusted file usually looks like this.
+  [HIGH] NEW_RISKY_PATTERN: Changed script gained risky patterns
+      https://cdn.abtest-vendor.example/js/12345.js
+      atob (base64 decode)
+  [HIGH] NEW_THIRD_PARTY_HOST: New third-party host: cdn.chatwidget.example
+      This page now loads code from a host it never used before. Confirm who added it.
+  [HIGH] SRI_REMOVED: SRI integrity attribute was removed
+      https://fonts.democdn.example/css/demosans.css
+  [MEDIUM] CONTENT_CHANGED: Script content changed (same URL)
+      https://cdn.abtest-vendor.example/js/12345.js
+      sha256 f2464c95df0f… → d7b0ffac7aae…, size 233 → 500 bytes.
+  [MEDIUM] CONTENT_CHANGED: Script content changed (same URL)
+      https://cdn.libcdn.example/npm/tinylib@1.2.3/tinylib.min.js
+      sha256 ead05b5afb69… → 14b093834bb7…, size 156 → 174 bytes.
+  [MEDIUM] CSP_SOURCE_ADDED: script-src now allows https://cdn.chatwidget.example
+      A new source was allowed. Confirm who added it and why.
+  [INFO] CSP_SOURCE_REMOVED: connect-src no longer allows https://api.abtest-vendor.example
+      Sources removed (usually a tightening change).
+------------------------------------------------------------------------------
+FINDINGS: 9
+  [CRITICAL] SRI_MISMATCH: SRI hash does not match the script served now
+      https://cdn.libcdn.example/npm/tinylib@1.2.3/tinylib.min.js
+      Browsers will block this file. The file changed after the hash was written: find out why.
+  [HIGH] CSP_UNSAFE_EVAL: script-src allows 'unsafe-eval'
+      eval() and new Function() are allowed. In the Optimizely incident an inline eval() fallback still ran on a site that blocked the remote payload because of this keyword.
+  [MEDIUM] CSP_CONNECT_BROAD: connect-src allows any host
+      Data can be sent to any destination. List only the APIs your pages really use.
+  [MEDIUM] CSP_STRICT_DYNAMIC: script-src uses 'strict-dynamic'
+      Any script added by a trusted script is also trusted and host allow-lists are ignored. If a trusted vendor script is compromised, the scripts it injects run too.
+  [MEDIUM] SRI_MISSING: Third-party script has no SRI integrity attribute
+      https://cdn.abtest-vendor.example/js/12345.js
+      Pin static, versioned files with integrity="sha384-Zccr9oBweGfxhJsjZDbD9xVFitQUTD2I7Vz6FQDEWDmkko8JJJDASh8NtG1HYSfC". Files that change often (A/B testing snippets, tag managers) cannot be pinned: monitor their hash and lock them down with CSP.
+  [MEDIUM] SRI_MISSING: Third-party script has no SRI integrity attribute
+      https://cdn.chatwidget.example/widget.js
+      Pin static, versioned files with integrity="sha384-5EednMJ75GX5Boig2Qiyjp9lnS7nKsx/+J3X9nVrOxhH8Qmp5NJYIg6UFL6J54rY". Files that change often (A/B testing snippets, tag managers) cannot be pinned: monitor their hash and lock them down with CSP.
+  [LOW] SCRIPT_HINTS: Third-party script uses patterns worth reviewing
+      https://cdn.abtest-vendor.example/js/12345.js
+      atob (base64 decode). Common in loaders and skimmers, but also in honest code.
+  [LOW] SRI_MISSING: Third-party stylesheet has no SRI integrity attribute
+      https://fonts.democdn.example/css/demosans.css
+      Pin static, versioned files with integrity="sha384-VfpBv71R57wG7kWp1pF+ibCp+FpaCLc1cZp0NRdHP7UCkMjS4Xk6Py94LlEzxnK0". Files that change often (A/B testing snippets, tag managers) cannot be pinned: monitor their hash and lock them down with CSP.
+  [INFO] THIRD_PARTY_HOSTS: 4 third-party host(s) load code into this page
+      cdn.abtest-vendor.example, cdn.chatwidget.example, cdn.libcdn.example, fonts.democdn.example

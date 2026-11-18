@@ -1,0 +1,5 @@
+{
+  "/": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'nonce-r4nd0m' https://cdn.abtest-vendor.example https://cdn.libcdn.example; style-src 'self' https://fonts.democdn.example; connect-src 'self' https://api.abtest-vendor.example; img-src 'self' data:; object-src 'none'; base-uri 'self'; report-uri /csp-report"
+  }
+}
